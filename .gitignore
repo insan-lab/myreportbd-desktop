@@ -51,3 +51,6 @@ app.*.map.json
 # must never be committed into this Flutter project)
 preport-web/
 *.php
+
+# Packaged build output (scripts/build_*)
+dist/
