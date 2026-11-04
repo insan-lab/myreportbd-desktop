@@ -45,9 +45,12 @@ package_deb() {
   local pkgroot
   pkgroot="$(mktemp -d)"
   local installdir="$pkgroot/opt/$APP_NAME"
-  mkdir -p "$installdir" "$pkgroot/DEBIAN" "$pkgroot/usr/share/applications" "$pkgroot/usr/bin"
+  mkdir -p "$installdir" "$pkgroot/DEBIAN" "$pkgroot/usr/share/applications" "$pkgroot/usr/bin" \
+    "$pkgroot/usr/share/icons/hicolor/256x256/apps"
   cp -r "$BUNDLE_DIR"/* "$installdir/"
   ln -s "/opt/$APP_NAME/$BINARY_NAME" "$pkgroot/usr/bin/$APP_NAME"
+  cp "$ROOT/linux/runner/resources/app_icon.png" \
+    "$pkgroot/usr/share/icons/hicolor/256x256/apps/$APP_NAME.png"
 
   cat > "$pkgroot/DEBIAN/control" <<EOF
 Package: $APP_NAME
@@ -79,6 +82,7 @@ package_arch() {
   local pkgdir
   pkgdir="$(mktemp -d)"
   cp -r "$BUNDLE_DIR" "$pkgdir/bundle"
+  cp "$ROOT/linux/runner/resources/app_icon.png" "$pkgdir/app_icon.png"
 
   cat > "$pkgdir/PKGBUILD" <<EOF
 pkgname=$APP_NAME
@@ -94,11 +98,13 @@ package() {
   cp -r "$pkgdir/bundle/." "\$pkgdir/opt/$APP_NAME/"
   install -d "\$pkgdir/usr/bin"
   ln -s "/opt/$APP_NAME/$BINARY_NAME" "\$pkgdir/usr/bin/$APP_NAME"
+  install -Dm644 "app_icon.png" "\$pkgdir/usr/share/icons/hicolor/256x256/apps/$APP_NAME.png"
   install -Dm644 /dev/stdin "\$pkgdir/usr/share/applications/$APP_NAME.desktop" <<DESKTOP
 [Desktop Entry]
 Type=Application
 Name=$APP_DISPLAY_NAME
 Exec=/opt/$APP_NAME/$BINARY_NAME
+Icon=$APP_NAME
 Categories=Office;
 DESKTOP
 }
