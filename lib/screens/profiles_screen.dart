@@ -79,7 +79,7 @@ class _ProfilesScreenState extends State<ProfilesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Reporter profiles')),
+      appBar: AppBar(),
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : Center(
@@ -88,7 +88,7 @@ class _ProfilesScreenState extends State<ProfilesScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Image.asset('assets/images/logo.png', height: 96),
+                    Image.asset('assets/images/logo.png', height: 180),
                     const SizedBox(height: 32),
                     Wrap(
                       spacing: 12,
